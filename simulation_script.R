@@ -18,3 +18,5 @@ autocorrelation_values <- seq(from = -0.95, to = 0.95, length.out = 1)
 beta_simulation <- omnibus_simulation(Genus_species, variance_values, autocorrelation_values)
 
 beta_simulation$df
+
+
