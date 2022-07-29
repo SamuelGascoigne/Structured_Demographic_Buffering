@@ -462,3 +462,44 @@ iterate_stage_distribution <- function(K_kernel_list, distribution_number = 1000
   
 }
 
+# calculate the mean, variance and coefficient of variation for each vital rate
+# in a stochastic list of matrices
+
+parameter_matrices <- function(matrices){
+  
+  dimension <- nrow(matrices[[1]])
+  
+  omnibus_matrix <- matrix(0, nrow = length(matrices), ncol = dimension^2)
+  
+  for(mat_num in 1:length(matrices)){
+    
+    omnibus_matrix[mat_num, ] <- as.vector(matrices[[mat_num]])
+    
+  }
+  
+  mean_matrix <- matrix(colSums(omnibus_matrix)/length(matrices),
+                        nrow = dimension, ncol = dimension)
+  
+  sd_vector <- c()
+  
+  for(col in 1:ncol(omnibus_matrix)){
+    
+    sd_vector[col] <- sd(omnibus_matrix[,col])
+    
+  }
+  
+  var_matrix <- matrix(sd_vector^2, 
+                       nrow = dimension, ncol = dimension)
+  
+  cv_matrix <- sqrt(var_matrix)/mean_matrix
+  
+  
+  output <- list("mean_matrix" = mean_matrix,
+                 "var_matrix" = var_matrix,
+                 "cv_matrix" = cv_matrix)
+  
+  return(output)
+  
+}
+
+
