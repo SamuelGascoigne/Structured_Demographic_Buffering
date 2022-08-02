@@ -11,9 +11,9 @@ Genus_species <- c("Berberis_thunbergii",
                    "Calathea_crotalifera") 
  
  
-variance_values <- seq(from = 0.9, to = 1.1, length.out = 1)
+variance_values <- seq(from = 0.9, to = 1.1, length.out = 15)
  
-autocorrelation_values <- seq(from = -0.95, to = 0.95, length.out = 1)
+autocorrelation_values <- seq(from = -0.95, to = 0.95, length.out = 15)
 
 beta_simulation <- omnibus_simulation(Genus_species, variance_values, autocorrelation_values)
 
