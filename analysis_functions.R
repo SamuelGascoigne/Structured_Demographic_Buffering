@@ -169,22 +169,18 @@ K_kernel_variance_perturbation <- function(K_kernel_list, pert_value = 1e-6, ver
 
 # calculate the elasticity and sensitivity for the P and F subkernels
 
-subkernel_variance_perturbations <- function(P_kernel_list, F_kernel_list, K_kernel_list = NA, pert = 1e-6){
+subkernel_variance_perturbations <- function(P_kernel_list, F_kernel_list, pert = 1e-6, verbose = FALSE){
   
   ptm <- proc.time()
+    
+  # initialize K_kernel_list to have the same structure as a subkernel
   
+  K_kernel_list <- P_kernel_list
   
-  if(is.na(K_kernel_list) == TRUE){
+  for(mat in 1:length(P_kernel_list)){
     
-    # initialize K_kernel_list to have the same structure as a subkernel
+    K_kernel_list[[mat]] <- P_kernel_list[[mat]] + F_kernel_list[[mat]]
     
-    K_kernel_list <- P_kernel_list
-    
-    for(mat in 1:length(P_kernel_list)){
-      
-      K_kernel_list[[mat]] <- P_kernel_list[[mat]] + F_kernel_list[[mat]]
-      
-    }
   }
   
   
@@ -255,18 +251,22 @@ subkernel_variance_perturbations <- function(P_kernel_list, F_kernel_list, K_ker
         
       }
       
-      if(count == 1 || count %% 100 == 0 || count == total){
-        
-        percentage <- (count/total) * 100
-        
-        run_time <- proc.time() - ptm
-        
-        run_time_message <- round(run_time["elapsed"])
-        
-        run_time_message <- seconds_to_period(run_time_message)
-        
-        message(name, " P-kernel perturbation: ", count, "/", total, " (", 
-                percentage, "%, ", run_time_message, ")")
+      if(verbose == TRUE){
+      
+        if(count == 1 || count %% 100 == 0 || count == total){
+          
+          percentage <- (count/total) * 100
+          
+          run_time <- proc.time() - ptm
+          
+          run_time_message <- round(run_time["elapsed"])
+          
+          run_time_message <- seconds_to_period(run_time_message)
+          
+          message(name, " P-kernel perturbation: ", count, "/", total, " (", 
+                  percentage, "%, ", run_time_message, ")")
+          
+        }
         
       }
       
@@ -341,18 +341,22 @@ subkernel_variance_perturbations <- function(P_kernel_list, F_kernel_list, K_ker
         
       }
       
-      if(count == 1 || count %% 100 == 0 || count == total){
-        
-        percentage <- (count/total) * 100
-        
-        run_time <- proc.time() - ptm
-        
-        run_time_message <- round(run_time["elapsed"])
-        
-        run_time_message <- seconds_to_period(run_time_message)
-        
-        message(name, " F-kernel perturbation: ", count, "/", total, " (", 
-                percentage, "%, ", run_time_message, ")")
+      if(verbose == TRUE){
+      
+        if(count == 1 || count %% 100 == 0 || count == total){
+          
+          percentage <- (count/total) * 100
+          
+          run_time <- proc.time() - ptm
+          
+          run_time_message <- round(run_time["elapsed"])
+          
+          run_time_message <- seconds_to_period(run_time_message)
+          
+          message(name, " F-kernel perturbation: ", count, "/", total, " (", 
+                  percentage, "%, ", run_time_message, ")")
+          
+        }
         
       }
       
