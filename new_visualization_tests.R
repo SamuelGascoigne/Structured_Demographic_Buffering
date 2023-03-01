@@ -131,6 +131,38 @@ AIC(Cc_stochastic_lambda_model_1, Cc_stochastic_lambda_model_2, Cc_stochastic_la
 
 plot_model(Cc_stochastic_lambda_model_2)
 
+
+output_df %>% 
+  filter(Genus_species != "Heliconia_tortuosa") %>% 
+  ggplot(aes(x = stochastic_lambda, fill = Genus_species)) +
+  geom_vline(xintercept = 1,
+             linetype = "dashed",
+             size = 2,
+             colour = "dark grey") +
+  geom_density(alpha = 0.5,
+               trim = TRUE,
+               colour = "dark grey") +
+  geom_point(aes(y = 3), position = position_jitter(width = 0, height = 3),
+             shape = 21) +
+  scale_x_continuous(limits = c(0.8, 1.4)) +
+  theme_minimal()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 output$df %>% 
   filter(Genus_species == "Heliconia_tortuosa") %>% 
   ggplot(aes(x = as.numeric(autocorrelation), 
