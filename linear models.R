@@ -1,5 +1,11 @@
 # Set-up -----
 
+
+# Clear the environment
+
+rm(list = ls())
+
+
 # Import libraries
 
 library(ggplot2)
@@ -20,11 +26,23 @@ output_df <- output$df |>
   mutate(stochastic_lambda = as.numeric(stochastic_lambda))
 
 
+# Make species specific datasets for convenience
+
+Bt_df <- output_df %>% 
+  filter(Genus_species == "Berberis_thunbergii")
+
+Cc_df <- output_df %>% 
+  filter(Genus_species == "Calathea_crotalifera")
+
+Ht_df <- output_df %>% 
+  filter(Genus_species == "Heliconia_tortuosa")
 
 
 # Figure 1 ----
 
-# Build template pie chart
+## Figure 1c ----
+
+### Build template ----
 
 # Create Data
 template_df <- data.frame(
@@ -38,9 +56,9 @@ template_df <- data.frame(
           1)
 )
 
-# Basic piechart
+### Pie chart ----
 
-ggplot(template_df, aes(x="", y=value, fill=group)) +
+Fig1c_pie <- ggplot(template_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -51,34 +69,39 @@ ggplot(template_df, aes(x="", y=value, fill=group)) +
 
 # Figure 2 ----
 
+## Figure 2a ----
+
+
 # Berberis thunbergii buffering figure
 
+### Analysis ----
+
 Bt_simulation_buffering_model_1 <- lm(simulation_buffering ~ variance * autocorrelation,
-                                   data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                   data = Bt_df)
 
 Bt_simulation_buffering_model_2 <- lm(simulation_buffering ~ variance * autocorrelation + I(autocorrelation^2),
-                                   data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                   data = Bt_df)
 
 Bt_simulation_buffering_model_3 <- lm(simulation_buffering ~ variance * autocorrelation + I(autocorrelation^2) + I(autocorrelation^3),
-                                   data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                   data = Bt_df)
 
 Bt_simulation_buffering_model_4 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2),
-                                   data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                   data = Bt_df)
 
 Bt_simulation_buffering_model_5 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(autocorrelation^2),
-                                   data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                   data = Bt_df)
 
 Bt_simulation_buffering_model_6 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(autocorrelation^2) + I(autocorrelation^3),
-                                   data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                   data = Bt_df)
 
 Bt_simulation_buffering_model_7 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3),
-                                      data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                      data = Bt_df)
 
 Bt_simulation_buffering_model_8 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3) + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                      data = Bt_df)
 
 Bt_simulation_buffering_model_9 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3) + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Berberis_thunbergii"))
+                                      data = Bt_df)
 
 AIC(Bt_simulation_buffering_model_1, 
     Bt_simulation_buffering_model_2, 
@@ -113,7 +136,11 @@ Bt_simulation_buffering_interaction_contribution <- Bt_simulation_buffering_inte
 
 Bt_simulation_buffering_residual_contribution <- 1 - (Bt_simulation_buffering_autocorrelation_contribution + Bt_simulation_buffering_variance_contribution + Bt_simulation_buffering_interaction_contribution)
 
+
+
 # Build a pie chart displaying the contributions.
+
+### Pie chart ----
 
 # Create Data
 Bt_simulation_buffering_df <- data.frame(
@@ -127,9 +154,8 @@ Bt_simulation_buffering_df <- data.frame(
           Bt_simulation_buffering_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Bt_simulation_buffering_df, aes(x="", y=value, fill=group)) +
+Fig2a_pie <- ggplot(Bt_simulation_buffering_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5,  alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -139,32 +165,36 @@ ggplot(Bt_simulation_buffering_df, aes(x="", y=value, fill=group)) +
 
 # Calathea crotalifera buffering figure
 
+## Figure 2b ----
+
+### Analysis ----
+
 Cc_simulation_buffering_model_1 <- lm(simulation_buffering ~ variance * autocorrelation,
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_2 <- lm(simulation_buffering ~ variance * autocorrelation + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_3 <- lm(simulation_buffering ~ variance * autocorrelation + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_4 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_5 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_6 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_7 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_8 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3) + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 Cc_simulation_buffering_model_9 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3) + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Calathea_crotalifera"))
+                                      data = Cc_df)
 
 AIC(Cc_simulation_buffering_model_1, 
     Cc_simulation_buffering_model_2, 
@@ -199,7 +229,8 @@ Cc_simulation_buffering_interaction_contribution <- Cc_simulation_buffering_inte
 
 Cc_simulation_buffering_residual_contribution <- 1 - (Cc_simulation_buffering_autocorrelation_contribution + Cc_simulation_buffering_variance_contribution + Cc_simulation_buffering_interaction_contribution)
 
-# Build a pie chart displaying the contributions.
+
+### Pie chart ----
 
 # Create Data
 Cc_simulation_buffering_df <- data.frame(
@@ -213,43 +244,47 @@ Cc_simulation_buffering_df <- data.frame(
           Cc_simulation_buffering_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Cc_simulation_buffering_df, aes(x="", y=value, fill=group)) +
+
+Fig2b_pie <- ggplot(Cc_simulation_buffering_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
   theme_void() # remove background, grid, numeric labels
 
 
+## Figure 2c ----
+
+### Analysis ----
+
 # Heliconia tortuosa buffering figure
 
 Ht_simulation_buffering_model_1 <- lm(simulation_buffering ~ variance * autocorrelation,
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_2 <- lm(simulation_buffering ~ variance * autocorrelation + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_3 <- lm(simulation_buffering ~ variance * autocorrelation + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_4 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_5 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_6 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_7 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_8 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3) + I(autocorrelation^2),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 Ht_simulation_buffering_model_9 <- lm(simulation_buffering ~ variance * autocorrelation + I(variance^2) + I(variance^3) + I(autocorrelation^2) + I(autocorrelation^3),
-                                      data = subset(output_df, output_df$Genus_species == "Heliconia_tortuosa"))
+                                      data = Ht_df)
 
 AIC(Ht_simulation_buffering_model_1, 
     Ht_simulation_buffering_model_2, 
@@ -284,7 +319,8 @@ Ht_simulation_buffering_interaction_contribution <- Ht_simulation_buffering_inte
 
 Ht_simulation_buffering_residual_contribution <- 1 - (Ht_simulation_buffering_autocorrelation_contribution + Ht_simulation_buffering_variance_contribution + Ht_simulation_buffering_interaction_contribution)
 
-# Build a pie chart displaying the contributions.
+
+### Pie chart ----
 
 # Create Data
 Ht_simulation_buffering_df <- data.frame(
@@ -298,9 +334,7 @@ Ht_simulation_buffering_df <- data.frame(
           Ht_simulation_buffering_residual_contribution)
 )
 
-# Basic piechart
-
-ggplot(Ht_simulation_buffering_df, aes(x="", y=value, fill=group)) +
+Fig2c_pie <- ggplot(Ht_simulation_buffering_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -311,15 +345,16 @@ ggplot(Ht_simulation_buffering_df, aes(x="", y=value, fill=group)) +
 
 # Figure 3 ----
  
-# Let's now model the impact of population structure figures
+
+## Deviance-based approach ----
 
 
 # First for Berberis thunbergii
 
+### Figure 3b ----
 
+#### Analysis ----
 
-Bt_df <- output_df %>% 
-  filter(Genus_species == "Berberis_thunbergii")
 
 Bt_df$scaled_simulation_buffering <- scale(Bt_df$simulation_buffering)
 
@@ -388,7 +423,9 @@ Bt_scaled_residuals_interaction_contribution <- Bt_scaled_residuals_interaction_
 
 Bt_scaled_residuals_residual_contribution <- 1 - (Bt_scaled_residuals_autocorrelation_contribution + Bt_scaled_residuals_variance_contribution + Bt_scaled_residuals_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+
+#### Pie chart ----
 
 # Create Data
 Bt_scaled_residuals_df <- data.frame(
@@ -402,9 +439,9 @@ Bt_scaled_residuals_df <- data.frame(
           Bt_scaled_residuals_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Bt_scaled_residuals_df, aes(x="", y=value, fill=group)) +
+
+Fig3b_pie <- ggplot(Bt_scaled_residuals_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -415,10 +452,10 @@ ggplot(Bt_scaled_residuals_df, aes(x="", y=value, fill=group)) +
 
 # Second for Calathea crotalifera
 
+### Figure 3e ----
 
+#### Analysis ----
 
-Cc_df <- output_df %>% 
-  filter(Genus_species == "Calathea_crotalifera")
 
 Cc_df$scaled_simulation_buffering <- scale(Cc_df$simulation_buffering)
 
@@ -487,7 +524,8 @@ Cc_scaled_residuals_interaction_contribution <- Cc_scaled_residuals_interaction_
 
 Cc_scaled_residuals_residual_contribution <- 1 - (Cc_scaled_residuals_autocorrelation_contribution + Cc_scaled_residuals_variance_contribution + Cc_scaled_residuals_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+#### Pie chart ----
 
 # Create Data
 Cc_scaled_residuals_df <- data.frame(
@@ -501,9 +539,9 @@ Cc_scaled_residuals_df <- data.frame(
           Cc_scaled_residuals_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Cc_scaled_residuals_df, aes(x="", y=value, fill=group)) +
+
+Fig3e_pie <- ggplot(Cc_scaled_residuals_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -515,10 +553,10 @@ ggplot(Cc_scaled_residuals_df, aes(x="", y=value, fill=group)) +
 
 # Third for Heliconia tortuosa
 
+### Figure 3h ----
 
+#### Analysis ----
 
-Ht_df <- output_df %>% 
-  filter(Genus_species == "Heliconia_tortuosa")
 
 Ht_df$scaled_simulation_buffering <- scale(Ht_df$simulation_buffering)
 
@@ -587,7 +625,8 @@ Ht_scaled_residuals_interaction_contribution <- Ht_scaled_residuals_interaction_
 
 Ht_scaled_residuals_residual_contribution <- 1 - (Ht_scaled_residuals_autocorrelation_contribution + Ht_scaled_residuals_variance_contribution + Ht_scaled_residuals_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+#### Pie chart ----
 
 # Create Data
 Ht_scaled_residuals_df <- data.frame(
@@ -601,9 +640,8 @@ Ht_scaled_residuals_df <- data.frame(
           Ht_scaled_residuals_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Ht_scaled_residuals_df, aes(x="", y=value, fill=group)) +
+Fig3h_pie <- ggplot(Ht_scaled_residuals_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -611,9 +649,13 @@ ggplot(Ht_scaled_residuals_df, aes(x="", y=value, fill=group)) +
 
 
 
-# Let's build the models for predicting buffering weight by stage distribution in response to autocorrelation, variance and autocorrelation:variance
+## Estimate-based approach ----
 
 # First Berberis thunbergii
+
+### Figure 3c ----
+
+#### Analysis ----
 
 Bt_mean_buffered_stage_model_1 <- lm(avg_stage_simulation_buffering  ~ variance * autocorrelation,
                                   data = Bt_df)
@@ -675,7 +717,8 @@ Bt_mean_buffered_stage_interaction_contribution <- Bt_mean_buffered_stage_intera
 
 Bt_mean_buffered_stage_residual_contribution <- 1 - (Bt_mean_buffered_stage_autocorrelation_contribution + Bt_mean_buffered_stage_variance_contribution + Bt_mean_buffered_stage_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+#### Pie chart ----
 
 # Create Data
 Bt_mean_buffered_stage_df <- data.frame(
@@ -689,16 +732,19 @@ Bt_mean_buffered_stage_df <- data.frame(
           Bt_mean_buffered_stage_residual_contribution)
 )
 
-# Basic piechart
-
-ggplot(Bt_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
+Fig3c_pie <- ggplot(Bt_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
   theme_void() # remove background, grid, numeric labels
 
 
+
 # Second Calathea crotalifera
+
+### Figure 3f ----
+
+#### Analysis ----
 
 Cc_mean_buffered_stage_model_1 <- lm(avg_stage_simulation_buffering  ~ variance * autocorrelation,
                                      data = Cc_df)
@@ -758,7 +804,8 @@ Cc_mean_buffered_stage_interaction_contribution <- Cc_mean_buffered_stage_intera
 
 Cc_mean_buffered_stage_residual_contribution <- 1 - (Cc_mean_buffered_stage_autocorrelation_contribution + Cc_mean_buffered_stage_variance_contribution + Cc_mean_buffered_stage_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+#### Pie chart ----
 
 # Create Data
 Cc_mean_buffered_stage_df <- data.frame(
@@ -772,16 +819,20 @@ Cc_mean_buffered_stage_df <- data.frame(
           Cc_mean_buffered_stage_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Cc_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
+Fig3f_pie <- ggplot(Cc_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
   theme_void() # remove background, grid, numeric labels
 
 
+
 # Third Heliconia tortuosa
+
+### Figure 3i ----
+
+#### Analysis ----
 
 Ht_mean_buffered_stage_model_1 <- lm(avg_stage_simulation_buffering  ~ variance * autocorrelation,
                                      data = Ht_df)
@@ -843,7 +894,8 @@ Ht_mean_buffered_stage_interaction_contribution <- Ht_mean_buffered_stage_intera
 
 Ht_mean_buffered_stage_residual_contribution <- 1 - (Ht_mean_buffered_stage_autocorrelation_contribution + Ht_mean_buffered_stage_variance_contribution + Ht_mean_buffered_stage_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+#### Pie chart ----
 
 # Create Data
 Ht_mean_buffered_stage_df <- data.frame(
@@ -857,9 +909,8 @@ Ht_mean_buffered_stage_df <- data.frame(
           Ht_mean_buffered_stage_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Ht_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
+Fig3i_pie <- ggplot(Ht_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -870,9 +921,37 @@ ggplot(Ht_mean_buffered_stage_df, aes(x="", y=value, fill=group)) +
 
 # Figure 4 ----
 
+
+## Figure 4a analysis ----
+
+Bt_df$P_F_difference <- as.numeric(Bt_df$simulation_P_buffering) - as.numeric(Bt_df$simulation_F_buffering)
+
+cor.test(x = Bt_df$P_F_difference,
+         y = Bt_df$simulation_buffering, 
+         method=c("pearson"))
+
+Cc_df$P_F_difference <- as.numeric(Cc_df$simulation_P_buffering) - as.numeric(Cc_df$simulation_F_buffering)
+
+cor.test(x = Cc_df$P_F_difference,
+         y = Cc_df$simulation_buffering, 
+         method=c("pearson"))
+
+
+Ht_df$P_F_difference <- as.numeric(Ht_df$simulation_P_buffering) - as.numeric(Ht_df$simulation_F_buffering)
+
+cor.test(x = Ht_df$P_F_difference,
+         y = Ht_df$simulation_buffering, 
+         method=c("pearson"))
+
+
+
 # Now let's model the P/F sub-kernel contributions
 
 # First Berberis thunbergii
+
+## Figure 4b ----
+
+### Analysis ----
 
 Bt_df$P_F_difference <- as.numeric(Bt_df$simulation_P_buffering) - as.numeric(Bt_df$simulation_F_buffering)
 
@@ -936,7 +1015,8 @@ Bt_P_F_difference_interaction_contribution <- Bt_P_F_difference_interaction_SS /
 
 Bt_P_F_difference_residual_contribution <- 1 - (Bt_P_F_difference_autocorrelation_contribution + Bt_P_F_difference_variance_contribution + Bt_P_F_difference_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+### Pie chart ----
 
 # Create Data
 Bt_P_F_difference_df <- data.frame(
@@ -950,16 +1030,20 @@ Bt_P_F_difference_df <- data.frame(
           Bt_P_F_difference_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Bt_P_F_difference_df, aes(x="", y=value, fill=group)) +
+Fig4b_pie <- ggplot(Bt_P_F_difference_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
   theme_void() # remove background, grid, numeric labels
 
 
+
 # Second Calathea crotalifera
+
+## Figure 4c ----
+
+### Analysis ----
 
 Cc_df$P_F_difference <- as.numeric(Cc_df$simulation_P_buffering) - as.numeric(Cc_df$simulation_F_buffering)
 
@@ -1023,7 +1107,8 @@ Cc_P_F_difference_interaction_contribution <- Cc_P_F_difference_interaction_SS /
 
 Cc_P_F_difference_residual_contribution <- 1 - (Cc_P_F_difference_autocorrelation_contribution + Cc_P_F_difference_variance_contribution + Cc_P_F_difference_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+### Pie chart ----
 
 # Create Data
 Cc_P_F_difference_df <- data.frame(
@@ -1037,16 +1122,20 @@ Cc_P_F_difference_df <- data.frame(
           Cc_P_F_difference_residual_contribution)
 )
 
-# Basic piechart
 
-ggplot(Cc_P_F_difference_df, aes(x="", y=value, fill=group)) +
+Fig4c_pie <- ggplot(Cc_P_F_difference_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
   theme_void() # remove background, grid, numeric labels
 
 
+
 # Third Heliconia tortuosa
+
+## Figure 4d ----
+
+### Analysis ----
 
 Ht_df$P_F_difference <- as.numeric(Ht_df$simulation_P_buffering) - as.numeric(Ht_df$simulation_F_buffering)
 
@@ -1110,7 +1199,8 @@ Ht_P_F_difference_interaction_contribution <- Ht_P_F_difference_interaction_SS /
 
 Ht_P_F_difference_residual_contribution <- 1 - (Ht_P_F_difference_autocorrelation_contribution + Ht_P_F_difference_variance_contribution + Ht_P_F_difference_interaction_SS)
 
-# Build a pie chart displaying the contributions.
+
+### Pie chart ----
 
 # Create Data
 Ht_P_F_difference_df <- data.frame(
@@ -1124,9 +1214,7 @@ Ht_P_F_difference_df <- data.frame(
           Ht_P_F_difference_residual_contribution)
 )
 
-# Basic piechart
-
-ggplot(Ht_P_F_difference_df, aes(x="", y=value, fill=group)) +
+Fig4d_pie <- ggplot(Ht_P_F_difference_df, aes(x="", y=value, fill=group)) +
   geom_bar(stat="identity", width=1, color="black", size = 1.5, alpha = 0.6) +
   coord_polar("y", start=0) +
   scale_fill_manual(values = c("orange", "dark grey", "white", "dark blue")) +
@@ -1134,26 +1222,5 @@ ggplot(Ht_P_F_difference_df, aes(x="", y=value, fill=group)) +
 
 
 
-
-
-
-Bt_df$P_F_difference <- as.numeric(Bt_df$simulation_P_buffering) - as.numeric(Bt_df$simulation_F_buffering)
-
-cor.test(x = Bt_df$P_F_difference,
-         y = Bt_df$simulation_buffering, 
-         method=c("pearson"))
-
-Cc_df$P_F_difference <- as.numeric(Cc_df$simulation_P_buffering) - as.numeric(Cc_df$simulation_F_buffering)
-
-cor.test(x = Cc_df$P_F_difference,
-         y = Cc_df$simulation_buffering, 
-         method=c("pearson"))
-
-
-Ht_df$P_F_difference <- as.numeric(Ht_df$simulation_P_buffering) - as.numeric(Ht_df$simulation_F_buffering)
-
-cor.test(x = Ht_df$P_F_difference,
-         y = Ht_df$simulation_buffering, 
-         method=c("pearson"))
 
 
