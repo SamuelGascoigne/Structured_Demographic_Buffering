@@ -783,6 +783,8 @@ AIC(Cc_mean_buffered_stage_model_1,
     Cc_mean_buffered_stage_model_8, 
     Cc_mean_buffered_stage_model_9) # Model 3 has the lowest AIC
 
+summary(Cc_mean_buffered_stage_model_3)
+
 
 # Now calculate the variance explained by autocorrelation, variance and autocorrelation:variance
 
