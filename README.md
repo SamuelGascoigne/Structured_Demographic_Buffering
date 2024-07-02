@@ -20,7 +20,7 @@ are fed into the simulation script aptly named *simulation_script.R*.
 
 Subsequent analysis and data visualization is performed in *linear_models.R* and *visualization_script.R*. All analysis (*e.g.*, model comparison) can be found in *linear_models.R*. These analyses also include the partitioning of variance across environmental variables (*e.g.*, mean temperature) and the construction of pie charts that show this variance partitioning. The pie charts pertaining to individual figures can be identified either by using the code outline or the figure names (*e.g.*, the pie chart for Figure 3b is named Fig3b_pie). The code for the scatter plots, heat maps and density plots can be found in *visualization_script.R* - which has the same outline and naming scheme as *linear_models.R*.
 
-### Brief over view of the data
+### Brief overview of the data
 
 The data generated from this simulation, and used in the analysis, can be found in the data folder under the name *simulation 2023-03-01 08.57.26.RData*. The naming convention (*i.e*, *simulation DATE TIME.RData*) is soft coded into the script to allow for the efficient and descriptive saving of simulation outputs. Specifically, see lines 111-123, 361-492 and 619-677 of   *omnibus_simulation_function.R* to see (1) how intermediate realizations of the data file are temporarily stored and (2) the final output file is saved at the end of the simulation.
 
