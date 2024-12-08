@@ -2,7 +2,7 @@
 
 ### Brief overview of the project
 
-This repository stores the code for the manuscript ___Structured demographic buffering: A framework to explore the environment drivers and demographic mechanisms underlying demographic buffering___ - for which there is a preprint accessible [here](https://www.biorxiv.org/content/10.1101/2023.07.20.549848v1.abstract). 
+This repository stores the code for the manuscript ___Structured demographic buffering: A framework to explore the environmental components and demographic mechanisms underlying demographic buffering___. 
 
 The purpose of this project was to identify the independent roles of environmental variance and autocorrelation on demographic buffering using stochastic-parameter integral projection models (IPMs). In turn, these scripts set-up IPMs and run simulations to explore the relationship(s) between environment, population and vital rate structure on buffering (*i.e.*, the summation of stochastic elasticities of population growth rate with respect to vital rate variance).
 
